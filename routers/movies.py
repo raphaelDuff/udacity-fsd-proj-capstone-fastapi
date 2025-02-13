@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.get("/")
-def create_item(session: Session = Depends(get_db)):
+def get_movies(session: Session = Depends(get_db)):
     stmt_select_all_movies = select(Movie).order_by(Movie.id)
     movies = session.scalars(stmt_select_all_movies).all()
     if len(movies) == 0:
