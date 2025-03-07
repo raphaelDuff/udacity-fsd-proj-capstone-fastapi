@@ -28,14 +28,14 @@ actor_movie_association = Table(
 )
 
 
-class Movie(Base):
+class DBMovie(Base):
     __tablename__ = "movies"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     release_date: Mapped[str] = mapped_column(Date, nullable=False)
-    actors: Mapped[list["Actor"]] = relationship(
-        "Actor", secondary=actor_movie_association, back_populates="movies"
+    actors: Mapped[list["DBActor"]] = relationship(
+        "DBActor", secondary=actor_movie_association, back_populates="movies"
     )
 
     def short(self):
@@ -61,7 +61,7 @@ class Gender(PyEnum):
     FEMALE = "Female"
 
 
-class Actor(Base):
+class DBActor(Base):
     __tablename__ = "actors"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
@@ -70,8 +70,8 @@ class Actor(Base):
     gender: Mapped[Gender] = mapped_column(
         Enum(Gender, name="gender_enum"), nullable=False
     )
-    movies: Mapped[list[Movie]] = relationship(
-        "Movie", secondary=actor_movie_association, back_populates="actors"
+    movies: Mapped[list[DBMovie]] = relationship(
+        "DBMovie", secondary=actor_movie_association, back_populates="actors"
     )
 
     def short(self):
